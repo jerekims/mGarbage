@@ -1,0 +1,97 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jere.garbageapp.Fragments.RegisterFragment">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <EditText
+            android:id="@+id/fragment_complain_description"
+            android:padding="8dp"
+            android:gravity="left"
+            android:inputType="text|textMultiLine|textCapSentences"
+            android:maxLength="100"
+            android:maxLines="3"
+            android:background="@drawable/border"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                android:hint="Select a Photo"
+                android:id="@+id/fragment_complain_image"
+                android:gravity="center"
+                android:drawableRight="@drawable/ic_menu_camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <ImageView
+                android:layout_below="@+id/fragment_complain_image"
+                android:src="@drawable/ic_menu_camera"
+                android:id="@+id/fragment_complain_ivImage"
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
+        </RelativeLayout>
+
+    </android.support.design.widget.TextInputLayout>
+
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/fragment_complain_wastetype"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content"
+            android:hint="Select Waste Type"
+            android:textColorHint="#05ab9a"
+            app:met_floatingLabel="normal" />
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/fragment_complain_btn"
+        android:layout_marginTop="16dp"
+        android:text="Report Complain"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--<ProgressBar-->
+        <!--style="@style/Base.Widget.AppCompat.ProgressBar"-->
+        <!--android:id="@+id/progress"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:indeterminate="true" />-->
+
+    </LinearLayout>
+</ScrollView>

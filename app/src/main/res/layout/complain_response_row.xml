@@ -1,0 +1,95 @@
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/event_row_card"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:contentPadding="8dp"
+    card_view:cardBackgroundColor="#5f6fda"
+    card_view:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linear_title"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/complain_response_row_complain_title"
+                android:text="Complain:"
+                android:textSize="32sp"
+                android:padding="8dp"
+                android:textColor="@color/cresponse"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/complain_response_row_complain_date"
+                android:text="27/02/19"
+                android:padding="8dp"
+                android:textColor="@color/cresponse"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_below="@id/complain_response_row_complain_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_below="@+id/linear_title"
+            android:layout_margin="4dp"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/complain_response_row_complain_description"
+            android:text="Some garbage was not collected."
+            android:textSize="24sp"
+            android:padding="8dp"
+            android:textColor="@color/cresponse"
+            android:textAlignment="textStart"
+            android:layout_below="@id/linear_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_below="@+id/complain_response_row_complain_description"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/complain_response_row_complain_response"
+            android:text="Response :"
+            android:textSize="32sp"
+            android:padding="8dp"
+            android:layout_below="@id/complain_response_row_complain_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/complain_response_row_complain_response_message"
+            android:text="Response Message:"
+            android:textAlignment="center"
+            android:textColor="@color/cresponse"
+            android:textSize="24sp"
+            android:textStyle="normal"
+            android:padding="8dp"
+            android:layout_below="@id/complain_response_row_complain_response"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

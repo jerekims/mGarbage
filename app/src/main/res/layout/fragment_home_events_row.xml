@@ -1,0 +1,154 @@
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fapp="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/event_row_card"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:contentPadding="8dp"
+    card_view:cardBackgroundColor="#e0e0ec"
+    card_view:cardElevation="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/fragment_home_events_row_linear"
+            android:orientation="horizontal"
+
+            android:layout_height="wrap_content">
+            <DatePicker
+                android:id="@+id/events_row_event_date"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/events"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/events_row_event_name_Title"
+                    android:text="EVENT NAME :"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/events_row_event_name"
+                    style="@style/Base.TextAppearance.AppCompat.Title"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/events_row_event_name_Title"
+                    android:textSize="16sp"
+                    android:padding="8sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_below="@+id/fragment_home_events_row_linear"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/events_row_event_description"
+            android:layout_below="@+id/fragment_home_events_row_linear"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
+            android:text=""
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:textSize="24sp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textStyle="normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_below="@+id/events_row_event_description"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:text="VENUE :"
+            android:id="@+id/events_row_venue_name"
+            android:textSize="16sp"
+            android:layout_below="@id/events_row_event_description"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/events_row_venue"
+            android:text="Venue"
+            style="@style/Base.TextAppearance.AppCompat.Small"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_alignBaseline="@+id/events_row_venue_name"
+            android:layout_toRightOf="@+id/events_row_venue_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fragment_home_events_row_fab"
+            android:layout_below="@+id/events_row_venue_name"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            fapp:backgroundTint="@color/colorfab"
+            android:clickable="true"
+            android:src="@drawable/ic_menu_share"
+
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fragment_home_events_row_fab_participate"
+            android:layout_below="@+id/events_row_venue_name"
+            android:layout_toLeftOf="@+id/fragment_home_events_row_fab"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            fapp:backgroundTint="@color/colorfab"
+            android:layout_margin="@dimen/fab_margin"
+            android:clickable="true"
+            android:src="@drawable/icon_participate"
+            />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="HOME" />
+        <item
+            android:id="@+id/nav_complain"
+            android:icon="@drawable/chat"
+            android:title="REPORT A COMPLAINT" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="MY EVENTS" />
+        <item
+            android:id="@+id/nav_manage_response"
+            android:icon="@drawable/response"
+            android:title="COMPLAINT RESPONSES" />
+    </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/user_login"
+                android:title="LOGIN" />
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_menu_send"
+                android:title="CHANGE PROFILE" />
+            <item
+                android:id="@+id/nav_register"
+                android:icon="@drawable/user"
+                android:title="REGISTER" />
+        </menu>
+    </item>
+
+</menu>
