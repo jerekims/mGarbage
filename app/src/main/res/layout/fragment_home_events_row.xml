@@ -11,7 +11,7 @@
     android:layout_marginRight="8dp"
     card_view:cardCornerRadius="8dp"
     card_view:contentPadding="8dp"
-    card_view:cardBackgroundColor="#e0e0ec"
+    card_view:cardBackgroundColor="#7783d1"
     card_view:cardElevation="8dp">
 
     <RelativeLayout
@@ -145,8 +145,9 @@
             android:layout_height="wrap_content"
             fapp:backgroundTint="@color/colorfab"
             android:layout_margin="@dimen/fab_margin"
+            android:scaleType="centerCrop"
             android:clickable="true"
-            android:src="@drawable/icon_participate"
+            android:src="@drawable/participate"
             />
 
     </RelativeLayout>

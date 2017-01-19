@@ -1,12 +1,15 @@
 package com.example.jere.garbageapp;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -25,6 +28,7 @@ import static com.example.jere.garbageapp.R.id.drawer_layout;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+        private final String TAG="MAIN_ACTIVITY";
         private SharedPreferences pref;
         DrawerLayout drawer;
         Toolbar toolbar;
@@ -68,12 +72,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        FragmentManager manager = getSupportFragmentManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (manager.getBackStackEntryCount() > 1 ) {
+                // If there are back-stack entries, leave the FragmentActivity
+                // implementation take care of them.
+                manager.popBackStack();
+
+            } else {
+                // Otherwise, ask user if he wants to leave :)
+                new AlertDialog.Builder(this)
+                        .setTitle("Exit application.")
+                        .setIcon(R.drawable.cancel)
+                        .setMessage("Are you sure you want to exit?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                MainActivity.super.onBackPressed();
+                            }
+                        }).create().show();
+            }
         }
+
     }
 
     @Override
@@ -121,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction =getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_activity_container,new ComplainFragment());
             fragmentTransaction.commit();
-            getSupportActionBar().setTitle("REPORT A COMPLAINT");
+            getSupportActionBar().setTitle("REPORT");
             item.setChecked(true);
         }
         else if (id == R.id.nav_events) {

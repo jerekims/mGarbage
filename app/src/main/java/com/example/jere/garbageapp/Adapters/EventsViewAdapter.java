@@ -159,7 +159,7 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                 dialog.cancel();
                             }
                         })
-                        .setIcon(R.drawable.icon_participate)
+                        .setIcon(R.drawable.participate)
                         .show();
             }
         });
