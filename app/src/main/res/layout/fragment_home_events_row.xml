@@ -11,7 +11,7 @@
     android:layout_marginRight="8dp"
     card_view:cardCornerRadius="8dp"
     card_view:contentPadding="8dp"
-    card_view:cardBackgroundColor="#7783d1"
+    card_view:cardBackgroundColor="#dee7ec"
     card_view:cardElevation="8dp">
 
     <RelativeLayout
@@ -54,14 +54,13 @@
 
                 <TextView
                     android:id="@+id/events_row_event_name"
-                    style="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginLeft="16dp"
                     android:gravity="center_horizontal"
                     android:layout_below="@id/events_row_event_name_Title"
                     android:textSize="16sp"
-                    android:padding="8sp"
+                    android:padding="4sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="normal" />
@@ -84,9 +83,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:layout_gravity="center"
-            android:text=""
-            style="@style/Base.TextAppearance.AppCompat.Body2"
-            android:textSize="24sp"
+            android:textSize="16sp"
+            android:paddingLeft="8dp"
+            android:textAlignment="inherit"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:textStyle="normal" />
@@ -102,7 +101,6 @@
             android:id="@+id/events_row_venue_name"
             android:textSize="16sp"
             android:layout_below="@id/events_row_event_description"
-            style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"

@@ -11,7 +11,7 @@
     android:layout_marginRight="8dp"
     card_view:cardCornerRadius="8dp"
     card_view:contentPadding="8dp"
-    card_view:cardBackgroundColor="#e0e0ec"
+    card_view:cardBackgroundColor="#dee7ec"
     card_view:cardElevation="8dp">
 
     <RelativeLayout
@@ -39,19 +39,35 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary" />
 
-            <TextView
-                android:id="@+id/fragment_my_events_event_name"
-                style="@style/Base.TextAppearance.AppCompat.Title"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center"
-                android:layout_toRightOf="@+id/fragment_my_events_event_date"
-                android:textSize="16sp"
-                android:text="hello"
-                android:padding="8sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="normal" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/fragment_my_events_event_title"
+                    android:text="EVENT NAME :"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/fragment_my_events_event_name"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_gravity="center"
+                    android:layout_below="@+id/fragment_my_events_event_title"
+                    android:textSize="16sp"
+                    android:text="hello"
+                    android:padding="8sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+
         </LinearLayout>
 
         <View
@@ -68,8 +84,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:layout_gravity="center"
-            android:text=""
-            style="@style/Base.TextAppearance.AppCompat.Body2"
             android:textSize="24sp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
@@ -86,7 +100,6 @@
             android:id="@+id/fragment_my_event_row_venue_name"
             android:textSize="16sp"
             android:layout_below="@id/fragment_my_events_row_event_description"
-            style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
@@ -97,7 +110,6 @@
         <TextView
             android:id="@+id/fragment_my_event_row_venue"
             android:text="Venue"
-            style="@style/Base.TextAppearance.AppCompat.Small"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginRight="16dp"

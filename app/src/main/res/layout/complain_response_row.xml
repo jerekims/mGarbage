@@ -55,7 +55,7 @@
         <TextView
             android:id="@+id/complain_response_row_complain_description"
             android:text="Some garbage was not collected."
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:textColor="@color/cresponse"
             android:textAlignment="textStart"
@@ -71,7 +71,7 @@
         <TextView
             android:id="@+id/complain_response_row_complain_response"
             android:text="Response :"
-            android:textSize="32sp"
+            android:textSize="16sp"
             android:padding="8dp"
             android:layout_below="@id/complain_response_row_complain_description"
             android:layout_width="match_parent"
@@ -80,9 +80,8 @@
         <TextView
             android:id="@+id/complain_response_row_complain_response_message"
             android:text="Response Message:"
-            android:textAlignment="center"
             android:textColor="@color/cresponse"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:textStyle="normal"
             android:padding="8dp"
             android:layout_below="@id/complain_response_row_complain_response"
