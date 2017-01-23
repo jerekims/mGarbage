@@ -27,7 +27,7 @@ public class BaseFragment extends android.support.v4.app.Fragment {
     }
 
     public void toHome(){
-        Fragment home = new HomeFragment();
+        Fragment home = new EventsFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_activity_container,home);
         ft.commit();

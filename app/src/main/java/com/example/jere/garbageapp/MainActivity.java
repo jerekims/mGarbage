@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.example.jere.garbageapp.Fragments.ComplainFragment;
 import com.example.jere.garbageapp.Fragments.FragmentComplainResponse;
+import com.example.jere.garbageapp.Fragments.EventsFragment;
 import com.example.jere.garbageapp.Fragments.HomeFragment;
 import com.example.jere.garbageapp.Fragments.LoginFragment;
 import com.example.jere.garbageapp.Fragments.MyEventsFragment;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initFragment(){
         Fragment fragment;
         if(pref.getBoolean(Constants.IS_LOGGED_IN,false)){
-            fragment = new ProfileFragment();
+            fragment = new EventsFragment();
         }else {
             fragment = new LoginFragment();
         }
@@ -120,9 +121,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if(id==R.id.action_refresh){
             fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,new HomeFragment());
+            fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment());
             fragmentTransaction.commit();
-            getSupportActionBar().setTitle("HOME");
+            getSupportActionBar().setTitle("EVENTS");
         }
 
         return super.onOptionsItemSelected(item);
@@ -141,14 +142,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportActionBar().setTitle("HOME");
             //getSupportActionBar().setLogo(R.drawable.transparent);
             item.setChecked(true);
-        } else if (id == R.id.nav_complain) {
+        } else if (id == R.id.nav_events) {
+            fragmentTransaction =getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment());
+            fragmentTransaction.commit();
+            getSupportActionBar().setTitle("EVENTS");
+            //getSupportActionBar().setLogo(R.drawable.transparent);
+            item.setChecked(true);
+        }
+        else if (id == R.id.nav_complain) {
             fragmentTransaction =getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_activity_container,new ComplainFragment());
             fragmentTransaction.commit();
             getSupportActionBar().setTitle("REPORT");
             item.setChecked(true);
         }
-        else if (id == R.id.nav_events) {
+        else if (id == R.id.nav_myevents) {
             fragmentTransaction =getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_activity_container,new MyEventsFragment());
             fragmentTransaction.commit();

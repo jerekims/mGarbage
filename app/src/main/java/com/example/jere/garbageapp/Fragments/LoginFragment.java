@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -14,7 +15,19 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.jere.garbageapp.R;
+import com.example.jere.garbageapp.app.AppController;
+import com.example.jere.garbageapp.libraries.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,56 +65,94 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
 
         switch (v.getId()){
-
             case R.id.tv_register:
                 goToRegister();
                 break;
 
             case R.id.btn_login:
                 login();
-
-//                if(!validate(email,password)) {
-//
-//                } else {
-//
-//                    Snackbar.make(getView(), "Fields are empty !", Snackbar.LENGTH_LONG).show();
-//                }
-//                break;
-
         }
     }
     public void login() {
-
-
         if (!validate()){
             onLoginFailed();
             return;
         }
 
         btn_login.setEnabled(false);
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Logging In.Please Wait....");
+        progressDialog.show();
 
+        final String uemail = et_email.getText().toString();
+        final String upassword = et_password.getText().toString();
 
-        String email = et_email.getText().toString();
-        String password = et_password.getText().toString();
-        String function="login";
-    }
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.SEND_LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.hide();
+                        try {
+                            JSONObject jsonObject= new JSONObject(response);
+                            String code=jsonObject.getString("login_code");
+                            if (code.equals("login_failed")){
+                                String message=jsonObject.getString("message");
+                                btn_login.setEnabled(true);
+                                Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+                            }else if(code.equals("login_success")){
+                                btn_login.setEnabled(true);
+                                JSONObject details=jsonObject.getJSONObject("details");
+                                //Log.d("Success",details.getString("name"));
+                                pref=getActivity().getSharedPreferences("MyPref", 0);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putBoolean("logged",true);
+                                editor.commit();
+                                String user_id=details.getString("user_id");
+                                String user_no=details.getString("user_no");
+                                String name=details.getString("name");
+                                String email=details.getString("email");
+                                String house=details.getString("house");
+                                String estate=details.getString("estate");
+                                String location=details.getString("location");
+                                Snackbar.make(getView(),"Login Successful",Snackbar.LENGTH_LONG).show();
+                                onLoginSuccess();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.hide();
+                        //Log.d("Error","volley error");
+                        Snackbar.make(getView(), error.toString(), Snackbar.LENGTH_SHORT).show();
+                    }
+                }) {
 
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(Constants.KEY_EMAIL, uemail);
+                params.put(Constants.KEY_PASSWORD, upassword);
+                return params;
+            }
 
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
+        };
+//            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+//            requestQueue.add(stringRequest);
+        AppController.getInstance().addToRequestQueue(stringRequest);
+
     }
 
 
     public void onLoginSuccess() {
-        btn_login.setEnabled(true);
         et_email.setText("");
         et_password.setText("");
-        getActivity().finish();
+        FragmentTransaction fragmentTransaction =((FragmentActivity)getActivity()).getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment()).commit();
     }
 
     public void onLoginFailed() {
@@ -130,7 +181,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
         return valid;
     }
-
 
 
     private void goToRegister(){
