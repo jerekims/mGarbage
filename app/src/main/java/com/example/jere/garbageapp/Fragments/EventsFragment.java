@@ -1,6 +1,7 @@
 package com.example.jere.garbageapp.Fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -49,6 +50,7 @@ public class EventsFragment extends BaseFragment {
     TextView txt;
     FloatingActionButton fab,part;
     SwipeRefreshLayout swipeRefreshLayout;
+    private SharedPreferences pref;
 
 
     String JSON_EVENT_ID = "event_id";

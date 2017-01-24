@@ -14,4 +14,10 @@
         app:showAsAction="always"
         android:icon="@drawable/refresh"
         android:title="Refresh"/>
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/logout"
+        android:title="LOGOUT"
+        android:visible="false" />
 </menu>

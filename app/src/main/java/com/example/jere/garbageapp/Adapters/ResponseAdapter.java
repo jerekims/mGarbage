@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.libraries.ComplainResponses;
+import com.example.jere.garbageapp.libraries.SessionManager;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ResponseAdapter extends RecyclerView.Adapter<ResponseAdapter.ViewHo
 
     Context context;
 
+
     List<ComplainResponses> getDataAdapter;
 
     public ResponseAdapter(List<ComplainResponses> getDataAdapter, Context context){
@@ -29,6 +31,7 @@ public class ResponseAdapter extends RecyclerView.Adapter<ResponseAdapter.ViewHo
 
         this.getDataAdapter = getDataAdapter;
         this.context = context;
+
     }
 
     @Override

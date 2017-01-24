@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
+import com.example.jere.garbageapp.libraries.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private TextView tv_register;
     private SharedPreferences pref;
     private ProgressDialog pDialog;
+    private SessionManager sessionManager;
 
 
     @Override
@@ -55,8 +57,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         tv_register = (TextView)view.findViewById(R.id.tv_register);
         et_email = (EditText)view.findViewById(R.id.et_email);
         et_password = (EditText)view.findViewById(R.id.et_password);
-
-
+        sessionManager=new SessionManager(getActivity());
         btn_login.setOnClickListener(this);
         tv_register.setOnClickListener(this);
     }
@@ -102,19 +103,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
                             }else if(code.equals("login_success")){
                                 btn_login.setEnabled(true);
+                                sessionManager.setLoggedIn(true);
                                 JSONObject details=jsonObject.getJSONObject("details");
-                                //Log.d("Success",details.getString("name"));
-                                pref=getActivity().getSharedPreferences("MyPref", 0);
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putBoolean("logged",true);
-                                editor.commit();
                                 String user_id=details.getString("user_id");
                                 String user_no=details.getString("user_no");
+                                sessionManager.setnumber(user_no);
                                 String name=details.getString("name");
                                 String email=details.getString("email");
                                 String house=details.getString("house");
                                 String estate=details.getString("estate");
                                 String location=details.getString("location");
+                                //Log.d("Success",details.getString("name"));
                                 Snackbar.make(getView(),"Login Successful",Snackbar.LENGTH_LONG).show();
                                 onLoginSuccess();
                             }

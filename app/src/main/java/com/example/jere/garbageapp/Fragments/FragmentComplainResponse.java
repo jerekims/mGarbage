@@ -27,6 +27,7 @@ import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.ComplainResponses;
 import com.example.jere.garbageapp.libraries.Constants;
+import com.example.jere.garbageapp.libraries.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,7 @@ public class FragmentComplainResponse extends BaseFragment {
     List<ComplainResponses> Getresponses;
     RecyclerView.Adapter recyclerViewadapter;
     ProgressBar progressBar;
+    private SessionManager sessionManager;
 
     String JSON_COMPLAIN_DATE = "complain_date";
     String JSON_DESC = "complian_description";
@@ -71,6 +73,7 @@ public class FragmentComplainResponse extends BaseFragment {
 
     private void setupinitialize(View view) {
         Getresponses = new ArrayList<>();
+        sessionManager= new SessionManager(getContext());
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_complain_response);
         progressBar=(ProgressBar)view.findViewById(R.id.fragment_complain_response_progressbar);
         recyclerView.setHasFixedSize(true);
@@ -117,7 +120,7 @@ public class FragmentComplainResponse extends BaseFragment {
                 }) {
                 @Override
                 protected Map<String, String> getParams() {
-                    String user_id="0702179556";
+                    String user_id=sessionManager.getnumber();
                     Map<String, String> params = new HashMap<String, String>();
                     params.put(Constants.KEY_NUMBER, user_id);
                     return params;

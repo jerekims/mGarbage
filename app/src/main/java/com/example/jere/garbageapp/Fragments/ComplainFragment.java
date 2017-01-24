@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -23,10 +22,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.jere.garbageapp.R;
+import com.example.jere.garbageapp.libraries.SessionManager;
 import com.example.jere.garbageapp.libraries.Utility;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -45,10 +44,9 @@ public class ComplainFragment extends BaseFragment implements View.OnClickListen
     private EditText et_description, et_wtype, et_mlocation;
     private AppCompatButton btncomplain,btnImage;
     private ImageView imageView;
-    private ProgressBar progress;
-    private SharedPreferences pref;
     private MaterialBetterSpinner et_wastetype;
     private String userChoosenTask;
+    private SessionManager sessionManager;
 
     Bitmap thumbnail;
 
@@ -82,6 +80,8 @@ public class ComplainFragment extends BaseFragment implements View.OnClickListen
         imageView=(ImageView)view.findViewById(R.id.fragment_complain_ivImage);
         btnImage=(AppCompatButton)view.findViewById(R.id.fragment_complain_image);
         btncomplain=(AppCompatButton)view.findViewById(R.id.fragment_complain_btn);
+
+        sessionManager= new SessionManager(getContext());
         btnImage.setOnClickListener(this);
         btncomplain.setOnClickListener(this);
 
@@ -223,13 +223,14 @@ public class ComplainFragment extends BaseFragment implements View.OnClickListen
         }
         else if (!isNetworkConnected()){
             Snackbar.make(getView(),"No Network Connection.Turn on Your Wifi", Snackbar.LENGTH_LONG).show();
-        }else {
+        } else{
+
 
                 String desc= et_description.getText().toString();
                 String wtype= et_wastetype.getText().toString();
                 String image=getStringImage(thumbnail);
                 String function = "complain";
-                String phone="0702179556";
+                String phone=sessionManager.getnumber();
 
                 if(image.length()< 1){
                     Toast.makeText(getActivity(),"An Image is Missing",Toast.LENGTH_LONG).show();

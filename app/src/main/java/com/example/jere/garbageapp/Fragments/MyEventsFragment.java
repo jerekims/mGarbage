@@ -30,6 +30,7 @@ import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
 import com.example.jere.garbageapp.libraries.Events;
+import com.example.jere.garbageapp.libraries.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +53,7 @@ public class MyEventsFragment extends BaseFragment {
     ProgressBar progressBar;
     TextView txt;
     FloatingActionButton fab,part;
+    private SessionManager sessionManager;
 
     JsonArrayRequest jsonArrayRequest ;
     RequestQueue requestQueue ;
@@ -78,6 +80,7 @@ public class MyEventsFragment extends BaseFragment {
 
     private void intialize(View view) {
         MyEvents = new ArrayList<>();
+        sessionManager= new SessionManager(getContext());
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_my_events_recycler_view);
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_my_events_progressbar);
         fab=(FloatingActionButton)view.findViewById(R.id.fragment_my_events_row_fab);
@@ -127,7 +130,7 @@ public class MyEventsFragment extends BaseFragment {
                 }) {
             @Override
             protected Map<String, String> getParams() {
-                String user_id="0702179556";
+                String user_id=sessionManager.getnumber();
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(Constants.KEY_NUMBER, user_id);
                 return params;

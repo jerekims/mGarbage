@@ -22,6 +22,7 @@ import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
 import com.example.jere.garbageapp.libraries.Events;
+import com.example.jere.garbageapp.libraries.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +39,7 @@ import java.util.Map;
 
 public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.ViewHolder>  {
     Context context;
-
+    private SessionManager sessionManager;
     List<Events> getDataAdapter;
 
     public EventsViewAdapter(List<Events> getDataAdapter, Context context){
@@ -47,6 +48,7 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
 
         this.getDataAdapter = getDataAdapter;
         this.context = context;
+        sessionManager = new SessionManager(context);
     }
 
     @Override
@@ -143,7 +145,7 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                     @Override
                                     protected Map<String, String> getParams() {
                                         Map<String, String> params = new HashMap<String, String>();
-                                        String user_id="0702179556";
+                                        String user_id=sessionManager.getnumber();
                                         params.put(Constants.KEY_ID,user_id);
                                         params.put("event_id", String.valueOf(event.getEvent_id()));
                                         return params;

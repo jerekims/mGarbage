@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,29 +16,37 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.jere.garbageapp.R;
+import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
-import com.example.jere.garbageapp.libraries.RequestInterface;
-import com.example.jere.garbageapp.libraries.ServerRequest;
-import com.example.jere.garbageapp.libraries.ServerResponse;
-import com.example.jere.garbageapp.libraries.User;
+import com.example.jere.garbageapp.libraries.SessionManager;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.jere.garbageapp.libraries.Constants.KEY_NUMBER;
+import static com.example.jere.garbageapp.libraries.Constants.KEY_PASSWORD;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    private TextView tv_name,tv_email,tv_message,tx_message_details;
+    private TextView tv_message,tx_message_details;
     private SharedPreferences pref;
     private AppCompatButton btn_change_password,btn_logout,btn_details;
     private EditText et_old_password,et_new_password,firstname,lastname,email,phoneno,houseno;
     private AlertDialog dialog;
     private ProgressBar progress;
+    AlertDialog.Builder builder;
+    private SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,28 +59,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        pref = getActivity().getPreferences(0);
 //        tv_name.setText("Welcome : "+pref.getString(Constants.NAME,""));
 //        tv_email.setText(pref.getString(Constants.EMAIL,""));
 
     }
 
     private void initViews(View view){
-
-        tv_name = (TextView)view.findViewById(R.id.tv_name);
-        tv_email = (TextView)view.findViewById(R.id.tv_email);
+        sessionManager=new SessionManager(getContext());
         btn_details = (AppCompatButton)view.findViewById(R.id.btn_chg_userdetails);
         btn_change_password = (AppCompatButton)view.findViewById(R.id.btn_chg_password);
-        btn_logout = (AppCompatButton)view.findViewById(R.id.btn_logout);
         btn_details.setOnClickListener(this);
         btn_change_password.setOnClickListener(this);
-        btn_logout.setOnClickListener(this);
 
     }
 
     private void showDialog(){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_password, null);
         et_old_password = (EditText)view.findViewById(R.id.et_old_password);
@@ -85,7 +86,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         builder.setPositiveButton("Change Password", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -102,12 +102,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 String old_password = et_old_password.getText().toString();
                 String new_password = et_new_password.getText().toString();
                 if(!old_password.isEmpty() && !new_password.isEmpty()){
-
                     progress.setVisibility(View.VISIBLE);
-                   // changePasswordProcess(pref.getString(Constants.EMAIL,""),old_password,new_password);
-
+                   changePasswordProcess(sessionManager.getnumber(),new_password);
                 }else {
-
                     tv_message.setVisibility(View.VISIBLE);
                     tv_message.setText("Fields are empty");
                 }
@@ -118,15 +115,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
             case R.id.btn_chg_password:
                 showDialog();
                 break;
             case R.id.btn_chg_userdetails:
                 showDetailsDialog();
-                break;
-            case R.id.btn_logout:
-                logout();
                 break;
         }
     }
@@ -181,67 +174,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     private void changeDetails(String unqid,String fname,String lname,String mail,String phone, String hseno ){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
-
-        User user = new User();
-        user.setUnique_id(unqid);
-        user.setFirstname(fname);
-        user.setLastname(lname);
-        user.setUemail(mail);
-        user.setPhonenumber(phone);
-        user.setHousenumber(hseno);
-        ServerRequest request = new ServerRequest();
-        request.setOperation(Constants.CHANGE_DETAILS);
-        request.setUser(user);
-
-        Call<ServerResponse> response = requestInterface.operation(request);
-
-        response.enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
-
-                ServerResponse resp = response.body();
-                if(resp.getResult().equals(Constants.SUCCESS)){
-                    progress.setVisibility(View.GONE);
-                    tv_message.setVisibility(View.GONE);
-                    dialog.dismiss();
-                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-
-                }else {
-                    progress.setVisibility(View.GONE);
-                    tv_message.setVisibility(View.VISIBLE);
-                    tv_message.setText(resp.getMessage());
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResponse> call, Throwable t) {
-
-                Log.d(Constants.TAG,"failed");
-                progress.setVisibility(View.GONE);
-                tv_message.setVisibility(View.VISIBLE);
-                tv_message.setText(t.getLocalizedMessage());
-
-            }
-        });
-
-    }
-
-
-    private void logout() {
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(Constants.IS_LOGGED_IN,false);
-        editor.putString(Constants.EMAIL,"");
-        editor.putString(Constants.NAME,"");
-        editor.putString(Constants.UNIQUE_ID,"");
-        editor.apply();
-        goToLogin();
     }
 
     private void goToLogin(){
@@ -250,53 +183,48 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         ft.commit();
     }
 
-    private void changePasswordProcess(String email,String old_password,String new_password){
+    private void changePasswordProcess(final String pnumber, final String new_password){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.CPASS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject= new JSONObject(response);
+                            String update=jsonObject.getString("update");
+                            String message=jsonObject.getString("message");
+                            if (update.equals("update_failed")){
+                              //btn_register.setEnabled(true);
+                                dialog.hide();
+                                Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+                            }else if(update.equals("update_success")){
+                                Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+                            }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestInterface requestInterface = retrofit.create(RequestInterface.class);
-
-        User user = new User();
-        user.setEmail(email);
-        user.setOld_password(old_password);
-        user.setNew_password(new_password);
-        ServerRequest request = new ServerRequest();
-        request.setOperation(Constants.CHANGE_PASSWORD_OPERATION);
-        request.setUser(user);
-        Call<ServerResponse> response = requestInterface.operation(request);
-
-        response.enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse> call, retrofit2.Response<ServerResponse> response) {
-
-                ServerResponse resp = response.body();
-                if(resp.getResult().equals(Constants.SUCCESS)){
-                    progress.setVisibility(View.GONE);
-                    tv_message.setVisibility(View.GONE);
-                    dialog.dismiss();
-                    Snackbar.make(getView(), resp.getMessage(), Snackbar.LENGTH_LONG).show();
-
-                }else {
-                    progress.setVisibility(View.GONE);
-                    tv_message.setVisibility(View.VISIBLE);
-                    tv_message.setText(resp.getMessage());
-
-                }
-            }
+                            Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.setVisibility(View.GONE);
+                        //Log.d("Error","volley error");
+                        Snackbar.make(getView(), error.toString(), Snackbar.LENGTH_SHORT).show();
+                    }
+                }) {
 
             @Override
-            public void onFailure(Call<ServerResponse> call, Throwable t) {
-
-                Log.d(Constants.TAG,"failed");
-                progress.setVisibility(View.GONE);
-                tv_message.setVisibility(View.VISIBLE);
-                tv_message.setText(t.getLocalizedMessage());
-
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(KEY_NUMBER, pnumber);
+                params.put(KEY_PASSWORD, new_password);
+                return params;
             }
-        });
+
+        };
+        AppController.getInstance().addToRequestQueue(stringRequest);
     }
 }
 
