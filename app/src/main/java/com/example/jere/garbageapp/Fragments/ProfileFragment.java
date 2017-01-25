@@ -37,7 +37,7 @@ import static com.example.jere.garbageapp.libraries.Constants.KEY_PASSWORD;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment implements View.OnClickListener {
+public class ProfileFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView tv_message,tx_message_details;
     private SharedPreferences pref;

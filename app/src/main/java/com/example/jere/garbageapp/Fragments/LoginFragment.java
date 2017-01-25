@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -33,7 +32,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener{
+public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
     private AppCompatButton btn_login;
     private EditText et_email,et_password;
@@ -105,14 +104,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                                 btn_login.setEnabled(true);
                                 sessionManager.setLoggedIn(true);
                                 JSONObject details=jsonObject.getJSONObject("details");
-                                String user_id=details.getString("user_id");
-                                String user_no=details.getString("user_no");
-                                sessionManager.setnumber(user_no);
-                                String name=details.getString("name");
-                                String email=details.getString("email");
-                                String house=details.getString("house");
-                                String estate=details.getString("estate");
-                                String location=details.getString("location");
+                                sessionManager.setnumber(details.getString("user_no"));
+                                sessionManager.setname(details.getString("name"));
+                                sessionManager.setemail(details.getString("email"));
                                 //Log.d("Success",details.getString("name"));
                                 Snackbar.make(getView(),"Login Successful",Snackbar.LENGTH_LONG).show();
                                 onLoginSuccess();
@@ -126,6 +120,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.hide();
+                        btn_login.setEnabled(true);
                         //Log.d("Error","volley error");
                         Snackbar.make(getView(), error.toString(), Snackbar.LENGTH_SHORT).show();
                     }
@@ -140,26 +135,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             }
 
         };
-//            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-//            requestQueue.add(stringRequest);
+
         AppController.getInstance().addToRequestQueue(stringRequest);
 
     }
 
 
-    public void onLoginSuccess() {
+    private void onLoginSuccess() {
         et_email.setText("");
         et_password.setText("");
-        FragmentTransaction fragmentTransaction =((FragmentActivity)getActivity()).getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment()).commit();
+        getEventsFragment();
     }
 
-    public void onLoginFailed() {
+    private void onLoginFailed() {
         Snackbar.make(getView(), "Login failed !", Snackbar.LENGTH_LONG).show();
         btn_login.setEnabled(true);
     }
 
-    public boolean validate(){
+    private boolean validate(){
         boolean valid = true;
         String email = et_email.getText().toString();
         String password = et_password.getText().toString();
@@ -186,6 +179,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_activity_container,new RegisterFragment());
         ft.commit();
+    }
+    private void getEventsFragment(){
+        FragmentTransaction fragmentTransaction =(getActivity()).getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment());
+        fragmentTransaction.commit();
     }
 
     private void goToProfile(){

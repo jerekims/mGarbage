@@ -3,10 +3,6 @@ package com.example.jere.garbageapp.Fragments;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-
-import com.example.jere.garbageapp.R;
 
 /**
  * Created by jere on 12/2/2016.
@@ -26,10 +22,4 @@ public class BaseFragment extends android.support.v4.app.Fragment {
         return netstate;
     }
 
-    public void toHome(){
-        Fragment home = new EventsFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_activity_container,home);
-        ft.commit();
-    }
 }

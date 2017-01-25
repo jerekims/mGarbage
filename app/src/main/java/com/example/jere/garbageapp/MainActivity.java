@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.jere.garbageapp.Fragments.ComplainFragment;
 import com.example.jere.garbageapp.Fragments.EventsFragment;
@@ -32,6 +32,7 @@ import static com.example.jere.garbageapp.R.id.drawer_layout;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
         private final String TAG="MAIN_ACTIVITY";
         private SharedPreferences pref;
+        Menu menu;
         DrawerLayout drawer;
         Toolbar toolbar;
         private SessionManager sessionManager;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setTitle("HOME");
 
         drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -57,23 +59,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initFragment();
 
     }
-    private void initFragment(){
+    public void initFragment(){
         Fragment fragment;
         if(sessionManager.loggedIn()){
-            fragment = new EventsFragment();
-            fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,fragment);
-            fragmentTransaction.commit();
-            getSupportActionBar().setTitle("EVENTS");
+            manageNavView();
+            createFragment(new EventsFragment(),"EVENTS");
         }
         else {
-            fragment = new LoginFragment();
-            fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,fragment);
-            fragmentTransaction.commit();
-            getSupportActionBar().setTitle("LOGIN");
+            manageNavView();
+            createFragment(new LoginFragment(),"LOGIN");
         }
+    }
 
+    private void manageNavView(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.
+        Menu menuNav = navigationView.getMenu();
+
+        MenuItem loginItem = menuNav.findItem(R.id.nav_login);
+        MenuItem registerItem = menuNav.findItem(R.id.nav_register);
+        MenuItem changeItem = menuNav.findItem(R.id.nav_profile);
+        MenuItem name=menuNav.findItem(R.id.nav_header_main_name);
+        MenuItem email=menuNav.findItem(R.id.nav_header_main_email);
+        if(sessionManager.loggedIn()){
+            loginItem.setVisible(false);
+            registerItem.setVisible(false);
+            changeItem.setVisible(true);
+            //name.setTitle(sessionManager.getname());
+            //email.setTitle(sessionManager.getemail());
+
+
+        }else{
+            changeItem.setVisible(false);
+            loginItem.setVisible(true);
+            registerItem.setVisible(true);
+           // name.setTitle("");
+            //email.setTitle("");
+        }
+//        menuNav.
 
     }
     private void logout(){
@@ -81,13 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
         loginFragment();
     }
+
     private void loginFragment(){
-        Fragment fragment;
-        fragment = new LoginFragment();
-        fragmentTransaction =getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_activity_container,fragment);
-        fragmentTransaction.commit();
-        getSupportActionBar().setTitle("LOGIN");
+        createFragment(new LoginFragment(),"LOGIN");
     }
 
     @Override
@@ -124,6 +143,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.logout);
+        if(sessionManager.loggedIn()){
+            item.setVisible(true);
+        }
+
+        invalidateOptionsMenu();
+
         return true;
     }
 
@@ -139,13 +165,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         if(id==R.id.action_refresh){
-            fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment());
-            fragmentTransaction.commit();
-            getSupportActionBar().setTitle("EVENTS");
+            createFragment(new EventsFragment(),"EVENTS");
+        }
+        if(id==R.id.logout){
+            logout();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private  void createFragment(Fragment fragment,String fragmentName){
+        fragmentTransaction =getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_activity_container,fragment);
+        fragmentTransaction.commit();
+        getSupportActionBar().setTitle(fragmentName);
+    }
+
+    private void showToast(){
+        Snackbar snackbar= Snackbar.make(findViewById(R.id.content_main),"You are not logged In.Login to Continue",Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -153,86 +190,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        manageNavView();
         if (id == R.id.nav_home) {
-            fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,new HomeFragment());
-            fragmentTransaction.commit();
-            getSupportActionBar().setTitle("HOME");
+            createFragment(new HomeFragment(),"HOME");
             //getSupportActionBar().setLogo(R.drawable.transparent);
             item.setChecked(true);
         } else if (id == R.id.nav_events) {
             if(!sessionManager.loggedIn()){
-                Toast.makeText(getApplicationContext(),"You are not logged In.",Toast.LENGTH_LONG).show();
+                showToast();
             }else {
-                //Toast.makeText(getApplicationContext(),sessionManager.getnumber(),Toast.LENGTH_LONG).show();
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_container, new EventsFragment());
-                fragmentTransaction.commit();
-                getSupportActionBar().setTitle("EVENTS");
-                //getSupportActionBar().setLogo(R.drawable.transparent);
+                createFragment(new EventsFragment(),"EVENTS");
                 item.setChecked(true);
             }
         }
         else if (id == R.id.nav_complain) {
             if(!sessionManager.loggedIn()){
-                Toast.makeText(getApplicationContext(),"You are not logged In.Login to Continue",Toast.LENGTH_LONG).show();
+                showToast();
                 loginFragment();
             }else {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_container, new ComplainFragment());
-                fragmentTransaction.commit();
-                getSupportActionBar().setTitle("REPORT");
+                createFragment(new ComplainFragment(),"REPORT");
                 item.setChecked(true);
             }
         }
         else if (id == R.id.nav_myevents) {
             if(!sessionManager.loggedIn()){
-                Toast.makeText(getApplicationContext(),"You are not logged In.",Toast.LENGTH_LONG).show();
+                showToast();
                 loginFragment();
             }else {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_container, new MyEventsFragment());
-                fragmentTransaction.commit();
-                getSupportActionBar().setTitle("MY EVENTS");
+                createFragment(new MyEventsFragment(),"MY EVENTS");
                 item.setChecked(true);
             }
         }
         else if (id == R.id.nav_manage_response) {
             if(!sessionManager.loggedIn()){
-                Toast.makeText(getApplicationContext(),"You are not logged In.",Toast.LENGTH_LONG).show();
+                showToast();
                 loginFragment();
             }else {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_container, new FragmentComplainResponse());
-                fragmentTransaction.commit();
-                getSupportActionBar().setTitle("RESPONSES");
+                createFragment(new FragmentComplainResponse(),"RESPONSES");
                 item.setChecked(true);
             }
 
         }
         else if (id == R.id.nav_register) {
-            fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,new RegisterFragment());
-            fragmentTransaction.commit();
-            getSupportActionBar().setTitle("REGISTER WITH US");
+            createFragment(new RegisterFragment(),"REGISTER WITH US");
             item.setChecked(true);
 
         } else if (id == R.id.nav_login) {
-            fragmentTransaction =getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_container,new LoginFragment());
-            fragmentTransaction.commit();
-            getSupportActionBar().setTitle("LOGIN");
+            createFragment(new LoginFragment(),"LOGIN");
             item.setChecked(true);
         } else if (id == R.id.nav_profile) {
             if(!sessionManager.loggedIn()){
-                Toast.makeText(getApplicationContext(),"You are not logged In.",Toast.LENGTH_LONG).show();
+                showToast();
                 loginFragment();
             }else {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_container, new ProfileFragment());
-                fragmentTransaction.commit();
-                getSupportActionBar().setTitle("CHANGE PROFILE");
+                createFragment(new ProfileFragment(),"CHANGE PROFILE");
                 item.setChecked(true);
             }
         }
