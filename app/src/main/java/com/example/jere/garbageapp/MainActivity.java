@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer;
         Toolbar toolbar;
         private SessionManager sessionManager;
+        ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
     android.support.v4.app.FragmentTransaction fragmentTransaction;
 
     @Override
@@ -46,21 +48,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.transparent);
         toolbar.setTitle("HOME");
-
+        sessionManager =new SessionManager(getApplicationContext());
+        getNavigation();
+        initFragment();
+    }
+    private  void getNavigation(){
         drawer= (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        sessionManager =new SessionManager(getApplicationContext());
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        initFragment();
-
     }
+
     public void initFragment(){
-        Fragment fragment;
         if(sessionManager.loggedIn()){
             manageNavView();
             createFragment(new EventsFragment(),"EVENTS");
@@ -71,38 +74,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void manageNavView(){
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.
-        Menu menuNav = navigationView.getMenu();
 
+
+    private void manageNavView(){
+        DrawerLayout drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menuNav = navigationView.getMenu();
         MenuItem loginItem = menuNav.findItem(R.id.nav_login);
         MenuItem registerItem = menuNav.findItem(R.id.nav_register);
         MenuItem changeItem = menuNav.findItem(R.id.nav_profile);
         MenuItem name=menuNav.findItem(R.id.nav_header_main_name);
         MenuItem email=menuNav.findItem(R.id.nav_header_main_email);
+
         if(sessionManager.loggedIn()){
             loginItem.setVisible(false);
             registerItem.setVisible(false);
             changeItem.setVisible(true);
+            getNavigation();
             //name.setTitle(sessionManager.getname());
             //email.setTitle(sessionManager.getemail());
-
-
+            //navigationView.inflateMenu(R.menu.activity_main_drawer);
         }else{
             changeItem.setVisible(false);
             loginItem.setVisible(true);
             registerItem.setVisible(true);
+            getNavigation();
            // name.setTitle("");
             //email.setTitle("");
+//            navigationView.inflateMenu(R.menu.activity_main_drawer);
+
         }
-//        menuNav.
 
     }
     private void logout(){
         sessionManager.setLoggedIn(false);
         finish();
-        loginFragment();
     }
 
     private void loginFragment(){
@@ -149,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         invalidateOptionsMenu();
-
         return true;
     }
 

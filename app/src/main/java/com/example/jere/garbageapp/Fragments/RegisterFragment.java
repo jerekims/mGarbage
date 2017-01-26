@@ -225,7 +225,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         }
 
         if (phone.isEmpty() || phone.length() < 10 ) {
-            et_phone.setError("At least 12 characters");
+            et_phone.setError("At least 10 characters");
             valid = false;
         } else {
             et_phone.setError(null);

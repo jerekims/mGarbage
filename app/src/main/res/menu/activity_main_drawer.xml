@@ -24,7 +24,7 @@
             android:title="COMPLAINT RESPONSES" />
     </group>
 
-    <item android:title="Account">
+    <item android:id="@+id/account_section" android:title="Account">
         <menu>
             <item
                 android:id="@+id/nav_login"

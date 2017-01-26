@@ -110,7 +110,7 @@ public class BackgroundTasks extends AsyncTask<String, Void, String> {
                 if (type==false)
                 {
                     message=resultJSON.getString("message");
-                    //Snackbar.make(getView(),message, Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(getView,message, Snackbar.LENGTH_LONG).show();
                    Toast.makeText(context,message, Toast.LENGTH_LONG).show();
                 }
                 else

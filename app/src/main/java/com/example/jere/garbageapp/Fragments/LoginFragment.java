@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends BaseFragment implements View.OnClickListener{
+public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
     private AppCompatButton btn_login;
     private EditText et_email,et_password;
@@ -40,6 +40,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
     private SharedPreferences pref;
     private ProgressDialog pDialog;
     private SessionManager sessionManager;
+
 
 
     @Override
