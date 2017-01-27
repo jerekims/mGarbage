@@ -130,7 +130,7 @@ public class MyEventsFragment extends BaseFragment {
                 }) {
             @Override
             protected Map<String, String> getParams() {
-                String user_id=sessionManager.getnumber();
+                String user_id=sessionManager.getNumber();
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(Constants.KEY_NUMBER, user_id);
                 return params;

@@ -16,13 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.jere.garbageapp.Fragments.ChangePasswordFragment;
 import com.example.jere.garbageapp.Fragments.ComplainFragment;
 import com.example.jere.garbageapp.Fragments.EventsFragment;
 import com.example.jere.garbageapp.Fragments.FragmentComplainResponse;
 import com.example.jere.garbageapp.Fragments.HomeFragment;
 import com.example.jere.garbageapp.Fragments.LoginFragment;
 import com.example.jere.garbageapp.Fragments.MyEventsFragment;
-import com.example.jere.garbageapp.Fragments.ProfileFragment;
+import com.example.jere.garbageapp.Fragments.ChangeProfileFragment;
 import com.example.jere.garbageapp.Fragments.RegisterFragment;
 import com.example.jere.garbageapp.libraries.SessionManager;
 
@@ -74,15 +75,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-
     private void manageNavView(){
         DrawerLayout drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menuNav = navigationView.getMenu();
         MenuItem loginItem = menuNav.findItem(R.id.nav_login);
         MenuItem registerItem = menuNav.findItem(R.id.nav_register);
         MenuItem changeItem = menuNav.findItem(R.id.nav_profile);
+        MenuItem changepass=menuNav.findItem(R.id.nav_password);
+        MenuItem logout =menuNav.findItem(R.id.nav_logout);
         MenuItem name=menuNav.findItem(R.id.nav_header_main_name);
         MenuItem email=menuNav.findItem(R.id.nav_header_main_email);
 
@@ -90,25 +91,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loginItem.setVisible(false);
             registerItem.setVisible(false);
             changeItem.setVisible(true);
-            getNavigation();
-            //name.setTitle(sessionManager.getname());
+            changepass.setVisible(true);
+            logout.setVisible(true);
+           // name.setTitle(sessionManager.getname());
             //email.setTitle(sessionManager.getemail());
-            //navigationView.inflateMenu(R.menu.activity_main_drawer);
+
         }else{
             changeItem.setVisible(false);
+            changepass.setVisible(false);
+            logout.setVisible(false);
             loginItem.setVisible(true);
             registerItem.setVisible(true);
-            getNavigation();
-           // name.setTitle("");
+            //name.setTitle("");
             //email.setTitle("");
-//            navigationView.inflateMenu(R.menu.activity_main_drawer);
 
         }
 
     }
+
     private void logout(){
         sessionManager.setLoggedIn(false);
         finish();
+        loginFragment();
     }
 
     private void loginFragment(){
@@ -149,12 +153,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem item = menu.findItem(R.id.logout);
-        if(sessionManager.loggedIn()){
-            item.setVisible(true);
-        }
-
-        invalidateOptionsMenu();
+//        MenuItem item = menu.findItem(R.id.logout);
+//        if(sessionManager.loggedIn()){
+//            item.setVisible(true);
+//        }
+//
+//        invalidateOptionsMenu();
         return true;
     }
 
@@ -169,12 +173,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id==R.id.action_refresh){
-            createFragment(new EventsFragment(),"EVENTS");
-        }
-        if(id==R.id.logout){
-            logout();
-        }
+//        if(id==R.id.action_refresh){
+//            createFragment(new EventsFragment(),"EVENTS");
+//        }
+//        if(id==R.id.logout){
+//            logout();
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -248,11 +252,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showToast();
                 loginFragment();
             }else {
-                createFragment(new ProfileFragment(),"CHANGE PROFILE");
+                createFragment(new ChangeProfileFragment(),"CHANGE PROFILE");
                 item.setChecked(true);
             }
+        } else if(id==R.id.nav_password){
+            createFragment(new ChangePasswordFragment(),"CHANGE PASSWORD");
+            item.setChecked(true);
         }
-
+        else if(id==R.id.nav_logout){
+            logout();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

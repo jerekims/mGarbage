@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="20dp"
+    android:gravity="center"
     android:paddingRight="20dp"
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
@@ -13,28 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <EditText
-        android:id="@+id/dialog_change_deatils_firstname"
-        android:hint="First name"
+        android:id="@+id/fragment_change_details_name"
+        android:hint="Name"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_marginTop="10dp"
-            android:id="@+id/dialog_change_deatils_lastname"
-            android:hint="Lastname"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -44,7 +31,7 @@
 
         <EditText
             android:layout_marginTop="10dp"
-            android:id="@+id/dialog_change_deatils_email"
+            android:id="@+id/fragment_change_details_email"
             android:hint="Email address"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
@@ -60,8 +47,8 @@
 
         <EditText
             android:layout_marginTop="10dp"
-            android:id="@+id/dialog_change_deatils_phoneno"
-            android:hint="Phone"
+            android:id="@+id/fragment_change_details_phoneno"
+            android:hint="Phone Number"
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -76,7 +63,7 @@
 
         <EditText
             android:layout_marginTop="10dp"
-            android:id="@+id/dialog_change_deatils_houseno"
+            android:id="@+id/fragment_change_details_houseno"
             android:hint="House Number"
             android:inputType="text"
             android:layout_width="match_parent"
@@ -84,21 +71,39 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/dialog_change_deatils_message"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ProgressBar
-        style="@style/Base.Widget.AppCompat.ProgressBar"
-        android:id="@+id/dialog_change_deatils_progress"
-        android:visibility="gone"
-        android:layout_marginTop="10dp"
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/fragment_change_details_estate"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_height="wrap_content"
-        android:indeterminate="true" />
+        android:hint="Select Estate Location"
+        android:textColorHint="#05ab9a"
+        app:met_floatingLabel="normal" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/fragment_change_details_location"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:hint="Select  Location"
+        android:textColorHint="#05ab9a"
+        app:met_floatingLabel="normal" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/fragment_change_details_button"
+        android:text="UPDATE PROFILE"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+
+
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.jere.garbageapp.Fragments;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,10 +15,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.jere.garbageapp.MainActivity;
 import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
@@ -55,8 +63,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
         btn_login = (AppCompatButton)view.findViewById(R.id.btn_login);
         tv_register = (TextView)view.findViewById(R.id.tv_register);
-        et_email = (EditText)view.findViewById(R.id.et_email);
-        et_password = (EditText)view.findViewById(R.id.et_password);
+        et_email = (EditText)view.findViewById(R.id.fragment_login_et_email);
+        et_password = (EditText)view.findViewById(R.id.fragment_login_et_password);
         sessionManager=new SessionManager(getActivity());
         btn_login.setOnClickListener(this);
         tv_register.setOnClickListener(this);
@@ -64,12 +72,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()){
             case R.id.tv_register:
                 goToRegister();
                 break;
-
             case R.id.btn_login:
                 login();
         }
@@ -85,7 +91,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Logging In.Please Wait....");
         progressDialog.show();
-
         final String uemail = et_email.getText().toString();
         final String upassword = et_password.getText().toString();
 
@@ -105,10 +110,13 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                 btn_login.setEnabled(true);
                                 sessionManager.setLoggedIn(true);
                                 JSONObject details=jsonObject.getJSONObject("details");
-                                sessionManager.setnumber(details.getString("user_no"));
-                                sessionManager.setname(details.getString("name"));
-                                sessionManager.setemail(details.getString("email"));
-                                //Log.d("Success",details.getString("name"));
+                                sessionManager.setUserId(details.getString("user_id"));
+                                sessionManager.setNumber(details.getString("user_no"));
+                                sessionManager.setName(details.getString("name"));
+                                sessionManager.setEmail(details.getString("email"));
+                                sessionManager.setHouse(details.getString("house"));
+                                sessionManager.setEstate(details.getString("estate"));
+                                sessionManager.setLocation(details.getString("location"));
                                 Snackbar.make(getView(),"Login Successful",Snackbar.LENGTH_LONG).show();
                                 onLoginSuccess();
                             }
@@ -119,11 +127,22 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(VolleyError volleyError) {
                         progressDialog.hide();
                         btn_login.setEnabled(true);
-                        //Log.d("Error","volley error");
-                        Snackbar.make(getView(), error.toString(), Snackbar.LENGTH_SHORT).show();
+                        if (volleyError instanceof NetworkError) {
+                            Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                        } else if (volleyError instanceof ServerError) {
+                            Snackbar.make(getView(),"The server could not be found. Please try again after some time!!",Snackbar.LENGTH_LONG).show();
+                        } else if (volleyError instanceof AuthFailureError) {
+                            Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                        } else if (volleyError instanceof ParseError) {
+                            Snackbar.make(getView(),"Parsing error! Please try again after some time!!",Snackbar.LENGTH_LONG).show();
+                        } else if (volleyError instanceof NoConnectionError) {
+                            Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                        } else if (volleyError instanceof TimeoutError) {
+                            Snackbar.make(getView(),"Connection TimeOut! Please check your internet connection.",Snackbar.LENGTH_LONG).show();
+                        }
                     }
                 }) {
 
@@ -145,7 +164,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private void onLoginSuccess() {
         et_email.setText("");
         et_password.setText("");
-        getEventsFragment();
+        startMain();
     }
 
     private void onLoginFailed() {
@@ -176,20 +195,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     }
 
 
-    private void goToRegister(){
+    private void goToRegister() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_activity_container,new RegisterFragment());
+        ft.replace(R.id.main_activity_container, new RegisterFragment());
         ft.commit();
-    }
-    private void getEventsFragment(){
-        FragmentTransaction fragmentTransaction =(getActivity()).getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_activity_container,new EventsFragment());
-        fragmentTransaction.commit();
     }
 
-    private void goToProfile(){
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_activity_container,new ProfileFragment());
-        ft.commit();
+    private void startMain(){
+        Intent intent= new Intent(getActivity(), MainActivity.class);
+        getActivity().startActivity(intent);
     }
+
 }

@@ -230,7 +230,7 @@ public class ComplainFragment extends BaseFragment implements View.OnClickListen
                 String wtype= et_wastetype.getText().toString();
                 String image=getStringImage(thumbnail);
                 String function = "complain";
-                String phone=sessionManager.getnumber();
+                String phone=sessionManager.getNumber();
 
                 if(image.length()< 1){
                     Toast.makeText(getActivity(),"An Image is Missing",Toast.LENGTH_LONG).show();

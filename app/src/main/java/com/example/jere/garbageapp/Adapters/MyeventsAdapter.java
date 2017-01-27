@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -124,9 +122,10 @@ public class MyeventsAdapter extends RecyclerView.Adapter<MyeventsAdapter.ViewHo
                                                     String code=jsonObject.getString("code");
                                                     String message=jsonObject.getString("message");
                                                     if(code.equals("unsub_success")){
-                                                        Toast.makeText(context, message +" "+event.getEvent_name(), Toast.LENGTH_SHORT).show();
-                                                        FragmentTransaction fragmentTransaction =((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-                                                        fragmentTransaction.replace(R.id.main_activity_container,new MyEventsFragment()).commit();
+                                                       Toast.makeText(context, message +" "+event.getEvent_name(), Toast.LENGTH_SHORT).show();
+                                                        Intent intent= new Intent(context, MyEventsFragment.class);
+                                                        context.startActivity(intent);
+
                                                     }
                                                     else if(code.equals("unsub_failed")){
                                                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -140,14 +139,14 @@ public class MyeventsAdapter extends RecyclerView.Adapter<MyeventsAdapter.ViewHo
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
                                                 //Log.d("Error","volley error");
-                                                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "Error occurred while connecting", Toast.LENGTH_SHORT).show();
                                             }
                                         }) {
 
                                     @Override
                                     protected Map<String, String> getParams() {
                                         Map<String, String> params = new HashMap<String, String>();
-                                        String user_id=sessionManager.getnumber();
+                                        String user_id=sessionManager.getNumber();
                                         params.put(Constants.KEY_ID, user_id);
                                         params.put("event_id", String.valueOf(event.getEvent_id()));
                                         return params;

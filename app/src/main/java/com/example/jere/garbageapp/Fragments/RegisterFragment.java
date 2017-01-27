@@ -17,8 +17,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.jere.garbageapp.R;
@@ -44,7 +50,6 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     private EditText et_email,et_password,et_name,et_house,et_phone;
     private TextView tv_login;
     private ProgressBar progress;
-    private ProgressDialog pDialog;
     private AlertDialog.Builder builder;
     private MaterialBetterSpinner et_estate,et_location;
 
@@ -169,10 +174,21 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
                     },
                     new Response.ErrorListener() {
                         @Override
-                        public void onErrorResponse(VolleyError error) {
+                        public void onErrorResponse(VolleyError volleyError) {
                             progressDialog.hide();
-                            //Log.d("Error","volley error");
-                            Snackbar.make(getView(), error.toString(), Snackbar.LENGTH_SHORT).show();
+                            if (volleyError instanceof NetworkError) {
+                                Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                            } else if (volleyError instanceof ServerError) {
+                                Snackbar.make(getView(),"The server could not be found. Please try again after some time!!",Snackbar.LENGTH_LONG).show();
+                            } else if (volleyError instanceof AuthFailureError) {
+                                Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                            } else if (volleyError instanceof ParseError) {
+                                Snackbar.make(getView(),"Parsing error! Please try again after some time!!",Snackbar.LENGTH_LONG).show();
+                            } else if (volleyError instanceof NoConnectionError) {
+                                Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                            } else if (volleyError instanceof TimeoutError) {
+                                Snackbar.make(getView(),"Connection TimeOut! Please check your internet connection.",Snackbar.LENGTH_LONG).show();
+                            }
                         }
                     }) {
 
@@ -191,8 +207,6 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
                 }
 
             };
-//            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-//            requestQueue.add(stringRequest);
             AppController.getInstance().addToRequestQueue(stringRequest);
 
         }
@@ -224,7 +238,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
             et_email.setError(null);
         }
 
-        if (phone.isEmpty() || phone.length() < 10 ) {
+        if (phone.isEmpty() || phone.length() < 9 ) {
             et_phone.setError("At least 10 characters");
             valid = false;
         } else {
@@ -232,7 +246,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         }
 
         if (house.isEmpty() || house.length() < 3) {
-            et_name.setError("At least 3 characters");
+            et_house.setError("At least 3 characters");
             valid = false;
         } else {
             et_house.setError(null);

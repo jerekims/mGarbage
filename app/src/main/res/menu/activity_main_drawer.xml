@@ -34,10 +34,24 @@
                 android:id="@+id/nav_profile"
                 android:icon="@drawable/ic_menu_send"
                 android:title="CHANGE PROFILE" />
+
+            <item
+                android:id="@+id/nav_password"
+                android:icon="@drawable/change"
+                android:title="CHANGE PASSWORD"
+                android:visible="false" />
+
             <item
                 android:id="@+id/nav_register"
                 android:icon="@drawable/user"
                 android:title="REGISTER" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout"
+                android:title="LOGOUT"
+                android:visible="false" />
+
         </menu>
     </item>
 

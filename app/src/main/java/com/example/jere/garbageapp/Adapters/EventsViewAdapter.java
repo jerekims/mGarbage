@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.jere.garbageapp.Fragments.EventsFragment;
 import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
@@ -122,9 +123,10 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                                     String message=jsonObject.getString("message");
                                                     if(code.equals("sub_success")){
                                                         Toast.makeText(context, message +" "+event.getEvent_name(), Toast.LENGTH_SHORT).show();
-//                                                        FragmentTransaction fragmentTransaction =((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-//                                                        fragmentTransaction.replace(R.id.main_activity_container,new MyEventsFragment());
-//                                                        fragmentTransaction.commit();
+                                                       Intent intent = new Intent(context, EventsFragment.class);
+                                                        context.startActivity(intent);
+                                                    } else if(code.equals("sub_updated")){
+                                                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                                                     }
                                                     else if(code.equals("sub_failed")){
                                                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -145,7 +147,7 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                     @Override
                                     protected Map<String, String> getParams() {
                                         Map<String, String> params = new HashMap<String, String>();
-                                        String user_id=sessionManager.getnumber();
+                                        String user_id=sessionManager.getNumber();
                                         params.put(Constants.KEY_ID,user_id);
                                         params.put("event_id", String.valueOf(event.getEvent_id()));
                                         return params;
