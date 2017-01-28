@@ -20,7 +20,7 @@ import com.example.jere.garbageapp.Fragments.ChangePasswordFragment;
 import com.example.jere.garbageapp.Fragments.ComplainFragment;
 import com.example.jere.garbageapp.Fragments.EventsFragment;
 import com.example.jere.garbageapp.Fragments.FragmentComplainResponse;
-import com.example.jere.garbageapp.Fragments.HomeFragment;
+import com.example.jere.garbageapp.Fragments.AboutFragment;
 import com.example.jere.garbageapp.Fragments.LoginFragment;
 import com.example.jere.garbageapp.Fragments.MyEventsFragment;
 import com.example.jere.garbageapp.Fragments.ChangeProfileFragment;
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         manageNavView();
         if (id == R.id.nav_home) {
-            createFragment(new HomeFragment(),"HOME");
+            createFragment(new AboutFragment(),"HOME");
             //getSupportActionBar().setLogo(R.drawable.transparent);
             item.setChecked(true);
         } else if (id == R.id.nav_events) {

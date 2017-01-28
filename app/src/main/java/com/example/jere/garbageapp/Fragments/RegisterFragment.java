@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     private ProgressBar progress;
     private AlertDialog.Builder builder;
     private MaterialBetterSpinner et_estate,et_location;
-
+   Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +72,8 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         et_location=(MaterialBetterSpinner)view.findViewById(R.id.fragment_register_location);
         et_password = (EditText)view.findViewById(R.id.et_password);
         builder = new AlertDialog.Builder(getActivity());
+
+        toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
 
         List<String> mylocations= new ArrayList<>();
         mylocations.add("Langata");
@@ -290,5 +293,6 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_activity_container,login);
         ft.commit();
+        toolbar.setTitle("LOGIN");
     }
 }

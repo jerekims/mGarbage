@@ -13,7 +13,9 @@ public class Constants {
     public static final String KEY_ESTATE = "estate";
     public static final String KEY_LOCATION = "location";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_OLD_PASSWORD="old_password";
     public static final String KEY_NUMBER="phone_number";
+    public static final String KEY_EVENTID="event_id";
 
     public static final String BASE_URL = "http://www.savtech.co.ke/";
     public static final String register_users="http://savtech.co.ke/garb/register.php";
@@ -24,7 +26,7 @@ public class Constants {
     public static final String UNSUBSCRIBE = "http://savtech.co.ke/garb/unsubscribe.php";
     public static final String MYEVENTS = "http://savtech.co.ke/garb/myevents.php";
     public static final String RESPONSE = "http://savtech.co.ke/garb/responses.php";
-    public static final String CPASS = "http://savtech.co.ke/garb/changepassword.php";
+    public static final String CHANGEPASSWORD = "http://savtech.co.ke/garb/changepassword.php";
     public static final String CHANGEDETAILS = "http://savtech.co.ke/garb/changedetails.php";
 
 

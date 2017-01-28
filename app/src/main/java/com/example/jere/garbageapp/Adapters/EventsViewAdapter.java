@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +16,14 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.jere.garbageapp.Fragments.EventsFragment;
@@ -32,6 +40,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.jere.garbageapp.libraries.Constants.KEY_EVENTID;
 
 
 /**
@@ -123,8 +133,9 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                                     String message=jsonObject.getString("message");
                                                     if(code.equals("sub_success")){
                                                         Toast.makeText(context, message +" "+event.getEvent_name(), Toast.LENGTH_SHORT).show();
-                                                       Intent intent = new Intent(context, EventsFragment.class);
-                                                        context.startActivity(intent);
+                                                        FragmentTransaction ft = ((FragmentActivity)context).getSupportFragmentManager().beginTransaction();
+                                                        ft.replace(R.id.main_activity_container, new EventsFragment());
+                                                        ft.commit();
                                                     } else if(code.equals("sub_updated")){
                                                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                                                     }
@@ -138,9 +149,21 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                         },
                                         new Response.ErrorListener() {
                                             @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                //Log.d("Error","volley error");
-                                                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                                            public void onErrorResponse(VolleyError volleyError) {
+                                                if (volleyError instanceof NetworkError) {
+                                                    Toast.makeText(context,"Cannot connect to Internet...Please check your connection!",Toast.LENGTH_LONG).show();
+                                                } else if (volleyError instanceof ServerError) {
+                                                    Toast.makeText(context,"The server could not be found. Please try again after some time!!",Toast.LENGTH_LONG).show();
+                                                } else if (volleyError instanceof AuthFailureError) {
+                                                    Toast.makeText(context,"Cannot connect to Internet...Please check your connection!",Toast.LENGTH_LONG).show();
+                                                } else if (volleyError instanceof ParseError) {
+                                                    Toast.makeText(context,"Parsing error! Please try again after some time!!",Toast.LENGTH_LONG).show();
+                                                } else if (volleyError instanceof NoConnectionError) {
+                                                    Toast.makeText(context,"Cannot connect to Internet...Please check your connection!",Toast.LENGTH_LONG).show();
+                                                } else if (volleyError instanceof TimeoutError) {
+                                                    Toast.makeText(context,"Connection TimeOut! Please check your internet connection.",Toast.LENGTH_LONG).show();
+                                                }
+
                                             }
                                         }) {
 
@@ -149,10 +172,11 @@ public class EventsViewAdapter extends RecyclerView.Adapter<EventsViewAdapter.Vi
                                         Map<String, String> params = new HashMap<String, String>();
                                         String user_id=sessionManager.getNumber();
                                         params.put(Constants.KEY_ID,user_id);
-                                        params.put("event_id", String.valueOf(event.getEvent_id()));
+                                        params.put(KEY_EVENTID, String.valueOf(event.getEvent_id()));
                                         return params;
                                     }
                                 };
+
                                 AppController.getInstance().addToRequestQueue(stringRequest);
 
                             }

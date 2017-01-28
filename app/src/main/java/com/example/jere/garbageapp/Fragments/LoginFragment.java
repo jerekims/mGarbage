@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private SharedPreferences pref;
     private ProgressDialog pDialog;
     private SessionManager sessionManager;
+    Toolbar toolbar;
 
 
 
@@ -66,6 +68,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         et_email = (EditText)view.findViewById(R.id.fragment_login_et_email);
         et_password = (EditText)view.findViewById(R.id.fragment_login_et_password);
         sessionManager=new SessionManager(getActivity());
+        toolbar = (Toolbar)(getActivity()).findViewById(R.id.toolbar);
+
         btn_login.setOnClickListener(this);
         tv_register.setOnClickListener(this);
     }
@@ -199,6 +203,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_activity_container, new RegisterFragment());
         ft.commit();
+        toolbar.setTitle("REGISTER WITH US");
     }
 
     private void startMain(){

@@ -3,6 +3,7 @@ package com.example.jere.garbageapp.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.jere.garbageapp.MainActivity;
 import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
@@ -213,7 +215,11 @@ public class ChangeProfileFragment extends BaseFragment {
                                 progressDialog.hide();
                                 Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
                             }else if(update.equals("update_success")){
+                                progressDialog.hide();
+                                btn_details.setEnabled(true);
                                 Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                getActivity().startActivity(intent);
                             }
 
                         } catch (JSONException e) {

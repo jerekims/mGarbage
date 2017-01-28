@@ -3,6 +3,7 @@ package com.example.jere.garbageapp.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.jere.garbageapp.MainActivity;
 import com.example.jere.garbageapp.R;
 import com.example.jere.garbageapp.app.AppController;
 import com.example.jere.garbageapp.libraries.Constants;
@@ -34,7 +36,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.jere.garbageapp.libraries.Constants.KEY_NUMBER;
+import static com.example.jere.garbageapp.libraries.Constants.KEY_ID;
+import static com.example.jere.garbageapp.libraries.Constants.KEY_OLD_PASSWORD;
 import static com.example.jere.garbageapp.libraries.Constants.KEY_PASSWORD;
 
 /**
@@ -101,11 +104,11 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
             progressDialog.setMessage("Updating.Please Wait....");
             progressDialog.show();
 
-            final String phoneno=sessionManager.getNumber();
-            final String old=et_old_password.getText().toString();
-            final String newp=et_new_password.getText().toString();
+            final String userid=sessionManager.getUserId();
+            final String oldpass=et_old_password.getText().toString();
+            final String newpass=et_new_password.getText().toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.CPASS,
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.CHANGEPASSWORD,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -115,10 +118,14 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
                                 String message=jsonObject.getString("message");
                                 if (update.equals("update_failed")){
                                     btn_change_password.setEnabled(true);
-                                    progressDialog.show();
+                                    progressDialog.hide();
                                     Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
                                 }else if(update.equals("update_success")){
+                                    progressDialog.hide();
+                                    btn_change_password.setEnabled(true);
                                     Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    getActivity().startActivity(intent);
                                 }
 
                                 //Snackbar.make(getView(),message, Snackbar.LENGTH_SHORT).show();
@@ -130,17 +137,24 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
+                            progressDialog.hide();
                             if (volleyError instanceof NetworkError) {
+                                btn_change_password.setEnabled(true);
                                 Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
                             } else if (volleyError instanceof ServerError) {
+                                btn_change_password.setEnabled(true);
                                 Snackbar.make(getView(),"The server could not be found. Please try again after some time!!",Snackbar.LENGTH_LONG).show();
                             } else if (volleyError instanceof AuthFailureError) {
+                                btn_change_password.setEnabled(true);
                                 Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
                             } else if (volleyError instanceof ParseError) {
+                                btn_change_password.setEnabled(true);
                                 Snackbar.make(getView(),"Parsing error! Please try again after some time!!",Snackbar.LENGTH_LONG).show();
                             } else if (volleyError instanceof NoConnectionError) {
+                                btn_change_password.setEnabled(true);
                                 Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
                             } else if (volleyError instanceof TimeoutError) {
+                                btn_change_password.setEnabled(true);
                                 Snackbar.make(getView(),"Connection TimeOut! Please check your internet connection.",Snackbar.LENGTH_LONG).show();
                             }
                         }
@@ -149,9 +163,9 @@ public class ChangePasswordFragment extends BaseFragment implements View.OnClick
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put(KEY_NUMBER, phoneno);
-                    params.put("old_password",old);
-                    params.put(KEY_PASSWORD, newp);
+                    params.put(KEY_ID,userid );
+                    params.put(KEY_OLD_PASSWORD,oldpass);
+                    params.put(KEY_PASSWORD, newpass);
                     return params;
                 }
 

@@ -37,6 +37,12 @@
     <string name="location_prompt">Select your Location</string>
     <string name="estate_prompt">Select your Estate</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="company_description">
+        We believe we are a customer focused, environmentally aware service business,delivering real results in partnership with customers,
+        enabling cost savings over a short or an extended period.
+        Our dedicated team has an excellent track record in customer service, and with over years of operating experience,
+        our expert knowledge is second to none and is always consistently professional in line with the needs of your residence,
+        business or industry. With time increasingly at a premium we also ensure we add value to your property by making everything as streamlined as possible.
+    </string>
+    <string name="tagline">No matter the size of your premises, no matter how many sites you have, Taka Kenya is a “one-stop solution” for all your waste needs.</string>
 </resources>
