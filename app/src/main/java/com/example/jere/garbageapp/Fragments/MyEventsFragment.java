@@ -114,7 +114,7 @@ public class MyEventsFragment extends BaseFragment {
                     public void onErrorResponse(VolleyError volleyError) {
                         progressBar.setVisibility(GONE);
                         if (volleyError instanceof NetworkError) {
-                            Snackbar.make(getView(),"Cannot connect to Internet...Please check your connection!",Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(getView(),"No Network Connection.Turn on Your Wifi",Snackbar.LENGTH_LONG).show();
                         } else if (volleyError instanceof ServerError) {
                             Snackbar.make(getView(),"The server could not be found. Please try again after some time!!",Snackbar.LENGTH_LONG).show();
                         } else if (volleyError instanceof AuthFailureError) {

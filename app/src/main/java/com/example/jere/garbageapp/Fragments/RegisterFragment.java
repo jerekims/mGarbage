@@ -197,7 +197,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
                 @Override
                 protected Map<String, String> getParams() {
-                    String user_id="2";
+//                    String user_id="2";
                     Map<String, String> params = new HashMap<String, String>();
                     params.put(Constants.KEY_NAME, uname);
                     params.put(Constants.KEY_EMAIL, uemail);

@@ -168,6 +168,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private void onLoginSuccess() {
         et_email.setText("");
         et_password.setText("");
+        getActivity().finish();
         startMain();
     }
 

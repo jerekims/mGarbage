@@ -25,11 +25,14 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Jeremiah"
+        android:layout_marginBottom="16dp"
+        android:textSize="16sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/nav_header_main_email"
         android:layout_width="wrap_content"
+        android:textSize="16sp"
         android:layout_height="wrap_content"
         android:text="kirika@strathmore.edu" />
 

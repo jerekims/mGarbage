@@ -147,7 +147,7 @@ public class MyeventsAdapter extends RecyclerView.Adapter<MyeventsAdapter.ViewHo
                                             @Override
                                             public void onErrorResponse(VolleyError volleyError) {
                                                 if (volleyError instanceof NetworkError) {
-                                                    Toast.makeText(context,"Cannot connect to Internet...Please check your connection!",Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(context,"No Network Connection.Turn on Your Wifi",Toast.LENGTH_LONG).show();
                                                 } else if (volleyError instanceof ServerError) {
                                                     Toast.makeText(context,"The server could not be found. Please try again after some time!!",Toast.LENGTH_LONG).show();
                                                 } else if (volleyError instanceof AuthFailureError) {

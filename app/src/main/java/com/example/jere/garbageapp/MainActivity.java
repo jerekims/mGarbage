@@ -1,6 +1,7 @@
 package com.example.jere.garbageapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,15 +16,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.example.jere.garbageapp.Fragments.AboutFragment;
 import com.example.jere.garbageapp.Fragments.ChangePasswordFragment;
+import com.example.jere.garbageapp.Fragments.ChangeProfileFragment;
 import com.example.jere.garbageapp.Fragments.ComplainFragment;
 import com.example.jere.garbageapp.Fragments.EventsFragment;
 import com.example.jere.garbageapp.Fragments.FragmentComplainResponse;
-import com.example.jere.garbageapp.Fragments.AboutFragment;
 import com.example.jere.garbageapp.Fragments.LoginFragment;
 import com.example.jere.garbageapp.Fragments.MyEventsFragment;
-import com.example.jere.garbageapp.Fragments.ChangeProfileFragment;
 import com.example.jere.garbageapp.Fragments.RegisterFragment;
 import com.example.jere.garbageapp.libraries.SessionManager;
 
@@ -78,14 +81,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void manageNavView(){
         DrawerLayout drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
         Menu menuNav = navigationView.getMenu();
         MenuItem loginItem = menuNav.findItem(R.id.nav_login);
         MenuItem registerItem = menuNav.findItem(R.id.nav_register);
         MenuItem changeItem = menuNav.findItem(R.id.nav_profile);
         MenuItem changepass=menuNav.findItem(R.id.nav_password);
         MenuItem logout =menuNav.findItem(R.id.nav_logout);
-        MenuItem name=menuNav.findItem(R.id.nav_header_main_name);
-        MenuItem email=menuNav.findItem(R.id.nav_header_main_email);
+        TextView name=(TextView)hView.findViewById(R.id.nav_header_main_name);
+        TextView email=(TextView)hView.findViewById(R.id.nav_header_main_email);
 
         if(sessionManager.loggedIn()){
             loginItem.setVisible(false);
@@ -93,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             changeItem.setVisible(true);
             changepass.setVisible(true);
             logout.setVisible(true);
-           // name.setTitle(sessionManager.getname());
-            //email.setTitle(sessionManager.getemail());
+            name.setText(sessionManager.getName());
+            email.setText(sessionManager.getEmail());
 
         }else{
             changeItem.setVisible(false);
@@ -102,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             logout.setVisible(false);
             loginItem.setVisible(true);
             registerItem.setVisible(true);
-            //name.setTitle("");
-            //email.setTitle("");
+            name.setText("Name :");
+            email.setText("Email :");
 
         }
 
@@ -111,12 +115,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void logout(){
         sessionManager.setLoggedIn(false);
-        finish();
+        sessionManager.setUserId("");
+        sessionManager.setNumber("");
+        sessionManager.setName("");
+        sessionManager.setEmail("");
+        sessionManager.setHouse("");
+        sessionManager.setEstate("");
+        sessionManager.setLocation("");
         loginFragment();
     }
 
     private void loginFragment(){
         createFragment(new LoginFragment(),"LOGIN");
+        finish();
+        Intent intent =new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
